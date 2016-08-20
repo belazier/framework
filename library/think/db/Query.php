@@ -327,8 +327,8 @@ class Query
                     break;
                 default:
                     if (function_exists($type)) {
-                        // 支持指定函数哈希
-                        $seq = (ord(substr($type($value), 0, 1)) % $rule['num']) + 1;
+                        // 支持指定函数分表
+                        $seq = $type($value ,$rule['num']);
                     } else {
                         // 按照字段的首字母的值分表
                         $seq = (ord($value{0}) % $rule['num']) + 1;
