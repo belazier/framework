@@ -1670,7 +1670,7 @@ class Query
      * @param string  $sequence     自增序列名
      * @return integer|string
      */
-    public function insert(array $data, $replace = false, $getLastInsID = false, $sequence = null)
+    public function insert($data, $replace = false, $getLastInsID = false, $sequence = null)
     {
         // 分析查询表达式
         $options = $this->parseExpress();
@@ -1700,7 +1700,7 @@ class Query
      * @param string  $sequence 自增序列名
      * @return integer|string
      */
-    public function insertGetId(array $data, $replace = false, $sequence = null)
+    public function insertGetId($data, $replace = false, $sequence = null)
     {
         return $this->insert($data, $replace, true, $sequence);
     }
@@ -1711,7 +1711,7 @@ class Query
      * @param mixed $dataSet 数据集
      * @return integer|string
      */
-    public function insertAll(array $dataSet)
+    public function insertAll($dataSet)
     {
         // 分析查询表达式
         $options = $this->parseExpress();
@@ -1765,7 +1765,7 @@ class Query
      * @throws Exception
      * @throws PDOException
      */
-    public function update(array $data)
+    public function update($data)
     {
         $options = $this->parseExpress();
         $pk      = $this->getPk($options);
