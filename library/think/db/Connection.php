@@ -150,10 +150,12 @@ abstract class Connection
      */
     public function __call($method, $args)
     {
-        if (!isset($this->query['database'])) {
-            $this->query['database'] = new Query($this);
+        // 避免所有db使用同一个query对象
+        $name = md5($method . serialize($args));
+        if (!isset($this->query[$name])) {
+            $this->query[$name] = new Query($this);
         }
-        return call_user_func_array([$this->query['database'], $method], $args);
+        return call_user_func_array([$this->query[$name], $method], $args);
     }
 
     /**
