@@ -569,7 +569,7 @@ abstract class Builder
      * @param bool      $replace 是否replace
      * @return string
      */
-    public function insert(array $data, $options = [], $replace = false)
+    public function insert($data, $options = [], $replace = false)
     {
         // 分析并处理数据
         $data = $this->parseData($data, $options);
