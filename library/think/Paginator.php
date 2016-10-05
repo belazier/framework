@@ -116,6 +116,8 @@ abstract class Paginator
         }
         if (count($this->options['query']) > 0) {
             $parameters = array_merge($this->options['query'], $parameters);
+        } else {
+            $parameters = array_merge(Request::instance()->get(), $parameters);
         }
         $url = $path;
         if (!empty($parameters)) {
