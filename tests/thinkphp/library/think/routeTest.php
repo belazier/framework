@@ -226,8 +226,8 @@ class routeTest extends \PHPUnit_Framework_TestCase
     public function testRouteToController()
     {
         $request = Request::instance();
-        Route::get('say/:name', '@app\index\controller\index\hello');
-        $this->assertEquals(['type' => 'controller', 'controller' => 'app\index\controller\index\hello', 'params' => ['name' => 'thinkphp']], Route::check($request, 'say/thinkphp'));
+        Route::get('say/:name', '@index/hello');
+        $this->assertEquals(['type' => 'controller', 'controller' => 'index/hello'], Route::check($request, 'say/thinkphp'));
     }
 
     public function testRouteToMethod()
@@ -235,8 +235,8 @@ class routeTest extends \PHPUnit_Framework_TestCase
         $request = Request::instance();
         Route::get('user/:name', '\app\index\service\User::get', [], ['name' => '\w+']);
         Route::get('info/:name', '\app\index\model\Info@getInfo', [], ['name' => '\w+']);
-        $this->assertEquals(['type' => 'method', 'method' => '\app\index\service\User::get', 'params' => ['name' => 'thinkphp']], Route::check($request, 'user/thinkphp'));
-        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\model\Info', 'getInfo'], 'params' => ['name' => 'thinkphp']], Route::check($request, 'info/thinkphp'));
+        $this->assertEquals(['type' => 'method', 'method' => '\app\index\service\User::get'], Route::check($request, 'user/thinkphp'));
+        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\model\Info', 'getInfo']], Route::check($request, 'info/thinkphp'));
     }
 
     public function testRouteToRedirect()
@@ -250,18 +250,17 @@ class routeTest extends \PHPUnit_Framework_TestCase
     {
         $request = Request::instance();
         Route::bind('index/blog');
-        $result = Route::parseUrl('read/10');
+        Route::get('blog/:id', 'index/blog/read');
+        $result = Route::check($request, 'blog/10');
         $this->assertEquals(['index', 'blog', 'read'], $result['module']);
-
-        Route::get('index/blog/:id', 'index/blog/read');
-        $result = Route::check($request, '10');
-        $this->assertEquals(['index', 'blog', 'read'], $result['module']);
+        $result = Route::parseUrl('test');
+        $this->assertEquals(['index', 'blog', 'test'], $result['module']);
 
         Route::bind('\app\index\controller', 'namespace');
-        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\controller\blog', 'read'], 'params' => []], Route::check($request, 'blog/read'));
+        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\controller\Blog', 'read']], Route::check($request, 'blog/read'));
 
-        Route::bind('\app\index\controller\blog', 'class');
-        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\controller\blog', 'read'], 'params' => []], Route::check($request, 'read'));
+        Route::bind('\app\index\controller\Blog', 'class');
+        $this->assertEquals(['type' => 'method', 'method' => ['\app\index\controller\Blog', 'read']], Route::check($request, 'read'));
     }
 
     public function testDomain()
