@@ -120,7 +120,7 @@ class Think
             $path = isset($module) ? APP_PATH . $module . DS . 'view' . DS : $this->config['view_path'];
         }
 
-        $controller = Loader::parseName($request->controller());
+        $controller = $request->controller();
         if ($controller && 0 !== strpos($template, '/')) {
             $depr     = $this->config['view_depr'];
             $template = str_replace(['/', ':'], $depr, $template);
